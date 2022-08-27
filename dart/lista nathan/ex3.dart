@@ -10,6 +10,6 @@ void main(){
   print("Agora, insira a porcentagem dos impostos");
   int percentImpostos = int.parse(stdin.readLineSync()!);
 
-  double precoTotal = custoFabrica + (custoFabrica * (percentFabrica / 100)) * (custoFabrica * (percentImpostos / 100));
+  double precoTotal = custoFabrica + (custoFabrica * (percentFabrica / 100)) + (custoFabrica * (percentImpostos / 100));
   print("O preço do carro é $precoTotal");
 }
