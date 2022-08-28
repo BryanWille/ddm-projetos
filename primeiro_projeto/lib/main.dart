@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 
+var idade = 30;
+
 void main() {
+
+  final nome = "Bryan"; //Basicamente diz que não é possível trocar o tipo, o tipo final é String
+  //lista são que nem em Python, podem receber qualquer porra
+  var lista = [1, "Dois", false];
+
+  // Porém Sets só recebem uma única vez o mesmo valor
+
+  var set = {"Bryan", "Wille"}; 
+  set = {"Bryan", "Wille", "Wille"}; //não vai funcionar 
+
   runApp(const MyApp());
 }
 
@@ -24,7 +36,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Tela de Demonstração'),
     );
   }
 }
@@ -96,10 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              'Sua idade é:',
             ),
             Text(
-              '$_counter',
+              '$idade', // % Significa que a próxima palavra vai ser uma variavel ou constante  
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
