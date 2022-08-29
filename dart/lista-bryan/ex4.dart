@@ -1,24 +1,25 @@
 import 'dart:io';
 
 void main() {
-  int branco, nulo, valido;
+  var votos = [];
 
   print("Digite o número de eleitores: ");
   int eleitores = int.parse(stdin.readLineSync()!);
 
   print("Digite o número de votos nulos: ");
-  nulo = int.parse(stdin.readLineSync()!);
+  votos.add(int.parse(stdin.readLineSync()!));
 
   print("Digite o número de votos brancos: ");
-  branco = int.parse(stdin.readLineSync()!);
+  votos.add(int.parse(stdin.readLineSync()!));
 
   print("Digite o número de votos válidos: ");
-  valido = int.parse(stdin.readLineSync()!);
+  votos.add(int.parse(stdin.readLineSync()!));
 
-  double porcNulo = nulo * 100 / eleitores;
-  double porcBranco = branco * 100 / eleitores;
-  double porcValido = valido * 100 / eleitores;
+  for (var i = 2; i >= 0; i--) {
+    votos.add(votos[i] * 100 / eleitores);
+    print(i < votos.length);
+  }
 
   print(
-      "================= \nBranco: $porcBranco% \nNulo: $porcNulo% \nValidos: $porcValido%");
+      "================= \nBranco: ${votos[3]}% \nNulo: ${votos[4]}% \nValidos: ${votos[5]}%");
 }
