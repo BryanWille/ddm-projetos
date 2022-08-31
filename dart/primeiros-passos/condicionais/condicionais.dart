@@ -38,20 +38,15 @@ void pesoIdeal(){
 
 void  postoGasolina(){
 
-  //0 Gasolina | 1 Etanol
-  var precoPorLitro = new List();  
+  //0 Gasolina | 1 Etanol  
 
-  precoPorLitro.add(readDouble("Digite o preço do litro de gasolina: "));
-  precoPorLitro.add(readDouble("Digite o preço do litro de etanol: "));
-
-  double litros = readDouble("Digite quantos litros vai querer de $combustivel: ");
   
 
   String combustivel = readString("Gasolina [G]\nEtanol [E]\n>>>")[0].toUpperCase();
 
   switch (combustivel){
     case 'G':
-      
+    
   }
 }
 
