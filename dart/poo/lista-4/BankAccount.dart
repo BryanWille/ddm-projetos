@@ -1,59 +1,136 @@
-class BankAccount{
-    late int _numberAccount;
-    late String _clientName;
-    late double _balance;
-    late double _creditScore;
-    late double _currentCreditScore;
+class BankAccount {
+  late int _numberAccount;
+  late String _clientName;
+  late double _balance;
+  late double _creditScore;
+  late List<Map> clientList = new List.empty(growable: true);
 
-    BankAccount({required int numberAccount, required String clientName, double balance = 0, double creditScore = 0}){
-      this._numberAccount = numberAccount;
-      this._clientName = clientName;
-      this._balance = balance;
-      this._creditScore = creditScore;
-      this._currentCreditScore = creditScore;
-    }
+  BankAccount(
+      {required int numberAccount,
+      required String clientName,
+      double balance = 0,
+      double creditScore = 0}) {
+    this.createAccount(
+        numberAccount: numberAccount,
+        clientName: clientName,
+        balance: balance,
+        creditScore: creditScore);
+  }
 
-    void withdraw(double ammount){
-      double immBalance = ammount - getBalance; // Immediate Money the Client have on account
-      if (immBalance > 0){ // If the client have more money than 0 in balance, they can withdraw
-        print("Now your balance is U\$${this.getBalance}");
-        _balance = this.getBalance - ammount;
-      } else if (0 > immBalance && immBalance.abs() <= getCurrentCreditScore){ // if they not have more in balance than they want to withdraw and they CreditScore can afford with it
-        _balance = 0;
-        _currentCreditScore = this.getCurrentCreditScore - immBalance.abs();
-        print("Now your balance is U\$${this.getBalance}");
-        print("Now your Credit Score is U\$${this.getCurrentCreditScore}");
-      } else { // if balance + credit score cannot afford with the withdraw, they cannot withdraw
-        print("You have US\$${getBalance} of balance, and US\$${getCreditScore} of credit score, so you can't withdraw U\$${ammount}!");
+  void createAccount(
+      {required int numberAccount,
+      required String clientName,
+      double balance = 0,
+      double creditScore = 0}) {
+    clientList.add({
+      "NumberAccount": numberAccount,
+      "ClientName": clientName,
+      "Balance": balance,
+      "CreditScore": creditScore
+    });
+  }
+
+  void withdraw(double ammount, int accountNumber) {
+    if (!accountNumberIsValid(accountNumber)) {
+    } else {
+      if (canWithdraw(ammount)) {
+        int idSender = getId(accountNumber);
+        clientList[idSender]["Balance"] -= ammount;
+        print("Withdrawed $ammount, now you have US\$${clientList[idSender]["Balance"]}");
+      } else {
+        print("You have US\$${getBalance} of balance, and US\$${getCreditScore} of credit score, so you can't withdraw US\$${ammount}!");
       }
     }
+  }
 
-    void deposit(double ammount){
-      if(isBalanceZero()){ // The Client is in debt with the Bank?
-        if(ammount + this._currentCreditScore > this._creditScore){ // If the client pay more than the debit, the money will go to balance
-          this._balance += _creditScore - (ammount + this._currentCreditScore);
-          this._currentCreditScore = _creditScore;
-        } else { // else the deposit, will pay the debt
-          this._currentCreditScore += ammount;
-        }
-      } else { // if the client is not in debt, the money will go directly to the balance
-          this._balance += ammount;
-        }
+  void deposit(double ammount, int accountNumber) {
+    if (!accountNumberIsValid(accountNumber)) {
+    } else {
+      int idReceiver = getId(accountNumber);
+      clientList[idReceiver]["Balance"] += ammount;
+      print("Deposited $ammount, now you have US\$${clientList[idReceiver]["Balance"]}");
+    }
+  }
+
+  void transfer(
+      int sendNumberAccount, int receiveNumberAccount, double ammount) {
+    if (!(accountNumberIsValid(sendNumberAccount) && accountNumberIsValid(receiveNumberAccount))) {
+    } else {
+       currentAccount(sendNumberAccount);
+       if(canWithdraw(ammount)){
+          withdraw(ammount, sendNumberAccount);
+          deposit(ammount, receiveNumberAccount);
+          print("Transferency succesfully done!!!");
+          currentAccount(sendNumberAccount);
+          print("Now you have US\$${this._balance}");
+       } else {
+        print("The Sender don't have the ammount of money to send!");
+       }
     }
 
-    bool isBalanceZero(){ return (0 == this.getBalance);}
+   
+
+  }
+
+  int getId(int numberAccount) {
+    int id = 0;
+      for (var i = 0; i < clientList.length; i++) {
+        if (clientList[i]["NumberAccount"] == numberAccount) {
+          id = i;
+          break;
+        }
+        ;
+      }
+    return id;
+  }
+
+  bool isClientInDebit() {
+    return (0 >= this.getBalance);
+  }
+
+  bool canWithdraw(double ammount) {
+    return (ammount <= this.getBalance + this.getCreditScore);
+  }
+
+  bool accountNumberIsValid(int accountNumber) {
+    bool isValid = false;
+    for (var i = 0; i < clientList.length; i++) {
+      if (clientList[i]["NumberAccount"] == accountNumber) {
+        isValid = true;
+        currentAccount(accountNumber);
+        break;
+      }
+      ;
+    }
+    if (!isValid) print("The Given Number Account Isn't Valid!");
+    return isValid;
+  }
+
+  void currentAccount(int accountNumber) {
+    int id = getId(accountNumber);
+    _numberAccount = clientList[id]["NumberAccount"];
+    _clientName = clientList[id]["ClientName"];
+    _balance = clientList[id]["Balance"];
+    _creditScore = clientList[id]["CreditScore"];
+  }
 
 
-    int get getNumberAccount => _numberAccount;
-    String get getClientName => _clientName; 
-    double get getBalance => _balance;  
-    double get getCreditScore => _creditScore;
-    double get getCurrentCreditScore => _currentCreditScore;
+  int get getNumberAccount => _numberAccount;
+  String get getClientName => _clientName;
+  double get getBalance => _balance;
+  double get getCreditScore => _creditScore;
 
-    set setNumberAccount(int number){this._numberAccount = number;}
-    set setClientName(String clientName){this._clientName = clientName;}
-    set setBalance(double balance){this._balance = balance;}
-    set setCreditScore(double number){this._creditScore = _creditScore;}
+  void printAccount(int accountNumber){
 
-
+    if (!accountNumberIsValid(accountNumber)){
+    } else {
+    int id = getId(accountNumber);
+    print("=====================================================" +
+    "\nAccount Number: ${clientList[id]["NumberAccount"]}" +
+    "\nClient Name: ${clientList[id]["ClientName"]}" +
+    "\nBalance: U\$${clientList[id]["Balance"]} " +
+    "\nCredit Score U\$${clientList[id]["CreditScore"]}" +
+    "\n=====================================================");
+  }
+  }
 }
