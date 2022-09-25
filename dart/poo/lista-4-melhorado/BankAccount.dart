@@ -19,7 +19,7 @@ class BankAccount{
         sender.withdraw(amount);
         receiver.deposit(amount);
       } else {
-        operationNotDone();
+        print("${sender.getClientName} don't have enough money for this operation!");
       }
     }
 
