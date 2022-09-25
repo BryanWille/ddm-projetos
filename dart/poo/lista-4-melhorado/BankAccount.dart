@@ -1,7 +1,5 @@
 class BankAccount{
-
     // =========== Attributes and Constructor =========== //
-
     late int _numberAccount;
     late String _clientName;
     late double _balance;
@@ -13,6 +11,7 @@ class BankAccount{
       this._balance = balance;
       this._creditScore = creditScore;
     }
+
 
     // =========== Main Operations =========== //
     void transfer(BankAccount sender, BankAccount receiver, double amount){
@@ -53,7 +52,6 @@ class BankAccount{
     void operationNotDone() => print("${this.getClientName} don't have enough money for this operation!");
 
 
-
     // =========== Getters and Setters =========== //
     int get getNumberAccount => _numberAccount;
     String get getClientName => _clientName; 
@@ -67,7 +65,6 @@ class BankAccount{
 
 
     // =========== To String =========== //
-
     @override
     String toString(){
       return "========================================\n" +
